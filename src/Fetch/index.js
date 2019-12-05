@@ -3,7 +3,25 @@
  */
 import React, { PureComponent } from 'react';
 import _ from 'lodash';
-import { request, pathMatchQuery } from '@/utils';
+import qs from 'qs';
+/**
+ * pathMatchQuery('/user/detial?id=:id&name=:name2&sd=12', { id: 100, name2: { a: 1 } }) => /user/detial?id=100&name={a:1}&sd=12
+ * @param {*} url
+ * @param {*} context
+ */
+export function pathMatchQuery(url = '', query) {
+  query = query || getQuery();
+  return url.replace(/:([a-zA-Z0-9\.]+)/g, word => {
+    let value = _.get(query, word.replace(':', ''));
+    value = parseInt(value) || value;
+    return JSON.stringify(value);
+  });
+}
+
+export function getQuery() {
+  let str = window.location.hash.split('?')[1] || '';
+  return qs.parse(str);
+}
 
 const acting = {}; // 用于存储缓存请求进行中
 
@@ -24,8 +42,10 @@ export default class Fetch extends PureComponent {
     dataProps: 'dataSource', // 挂载到子节点上对应props
     onRequest: params => params, // 请求前
     onResponse: res => res, // 请求后
+    onError: e => console.error(e),
     render: null, // 用于处理显示
     cache: false, // 是否进行缓, 此参数将字符串化作为缓存key值，。如果传入时间戳，则表示每次刷新缓存失效
+    matchQuery: true, // 是否根据url中参数自动补全到接口中，如 api=/user/info/:id, 当前url为 /page/user?id=1，会补全请求 /user/info/1
   }
 
   componentWillReceiveProps(nextProps) {
@@ -119,13 +139,12 @@ export default class Fetch extends PureComponent {
       console.warn(e);
       return;
     }
-
     acting[this.getCacheKey()] = true;
     this.setState({ loading: true });
     if (Object.keys(params).length === 0) {
       params = undefined;
     }
-    request(api, params).then(res => {
+    fetch(api, params).then(res => {
       const data = _.get(res, this.props.dataIndex)
       if (this.props.cache) {
         this.setCacheData(data);
@@ -136,7 +155,7 @@ export default class Fetch extends PureComponent {
       });
       acting[this.getCacheKey()] = false;
     }).catch(e => {
-      console.error(e)
+      this.props.onError && this.props.onError(e);
       this.setState({ loading: false });
       acting[this.getCacheKey()] = false;
     });
