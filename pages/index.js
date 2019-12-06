@@ -1,6 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
-import {MDXProvider} from '@mdx-js/react'
+import { MDXProvider } from '@mdx-js/react'
 const components = {
   pre: props => <div {...props} />,
   code: props => <pre style={{ color: 'tomato' }} {...props} />
@@ -13,10 +13,9 @@ const Home = (props) => (
       <title>Home</title>
     </Head>
 
-    <MDXProvider components={components}>
-    <main {...props}>
-    </main>
-  </MDXProvider>
+    <div>
+      2323
+    </div>
   </div>
 )
 

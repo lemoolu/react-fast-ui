@@ -122,9 +122,7 @@ const components = {
   }, props))
 };
 
-const Home = props => react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(next_head__WEBPACK_IMPORTED_MODULE_1___default.a, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("title", null, "Home")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_mdx_js_react__WEBPACK_IMPORTED_MODULE_2__["MDXProvider"], {
-  components: components
-}, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("main", props)));
+const Home = props => react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(next_head__WEBPACK_IMPORTED_MODULE_1___default.a, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("title", null, "Home")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "2323"));
 
 /* harmony default export */ __webpack_exports__["default"] = (Home);
 
